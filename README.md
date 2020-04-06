@@ -20,7 +20,7 @@ The search page has a text input that may be used to find books. As the value of
 
 When a book is on a bookshelf, it has the same state on both the main application page and the search page.
 
-![Alt text](images/correct-use-of-state.png?raw=true "Image 3")
+![Alt text](images/correct-use-of-state.gif?raw=true "Image 3")
 
 The search page also has a link to / (the root URL), which leads back to the main page.
 
