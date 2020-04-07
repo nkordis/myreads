@@ -18,53 +18,52 @@ class BooksApp extends React.Component {
 
     query: "",
 
-    search: []
+    search: [],
   };
 
   componentDidMount() {
-    BooksAPI.getAll().then(books => {
-      books.forEach(book => {
-        this.setState(currentState => ({
-          [book.shelf]: currentState[book.shelf].concat([book])
+    BooksAPI.getAll().then((books) => {
+      books.forEach((book) => {
+        this.setState((currentState) => ({
+          [book.shelf]: currentState[book.shelf].concat([book]),
         }));
       });
     });
   }
 
-  updateQuery = query => {
-    const newQuery = query.trim();
+  updateQuery = (query) => {
     this.setState(() => ({
-      query: newQuery
+      query,
     }));
-    if (newQuery !== "") {
-      BooksAPI.search(newQuery).then(books => {
+    if (query !== "") {
+      BooksAPI.search(query).then((books) => {
         if (books.error === undefined) {
-          books.forEach(book => {
-            if (this.state.currentlyReading.some(b => b.id === book.id)) {
+          books.forEach((book) => {
+            if (this.state.currentlyReading.some((b) => b.id === book.id)) {
               book.shelf = "currentlyReading";
-            } else if (this.state.wantToRead.some(b => b.id === book.id)) {
+            } else if (this.state.wantToRead.some((b) => b.id === book.id)) {
               book.shelf = "wantToRead";
-            } else if (this.state.read.some(b => b.id === book.id)) {
+            } else if (this.state.read.some((b) => b.id === book.id)) {
               book.shelf = "read";
             } else {
-              this.setState(currentState => ({
-                none: currentState.none.concat([book])
+              this.setState((currentState) => ({
+                none: currentState.none.concat([book]),
               }));
             }
           });
 
           this.setState({
-            search: books
+            search: books,
           });
         } else {
           this.setState({
-            search: []
+            search: [],
           });
         }
       });
     } else {
       this.setState({
-        search: []
+        search: [],
       });
     }
   };
@@ -75,15 +74,15 @@ class BooksApp extends React.Component {
       oldbookShelf !== "wantToRead" &&
       oldbookShelf !== "read"
     ) {
-      this.setState(currentState => ({
-        [newBookShelf]: currentState[newBookShelf].concat([book])
+      this.setState((currentState) => ({
+        [newBookShelf]: currentState[newBookShelf].concat([book]),
       }));
     } else {
-      this.setState(currentState => ({
+      this.setState((currentState) => ({
         [newBookShelf]: currentState[newBookShelf].concat([book]),
-        [oldbookShelf]: currentState[oldbookShelf].filter(b => {
+        [oldbookShelf]: currentState[oldbookShelf].filter((b) => {
           return b.title !== book.title;
-        })
+        }),
       }));
     }
     BooksAPI.update(book, newBookShelf);
@@ -95,7 +94,7 @@ class BooksApp extends React.Component {
     const bookShelfs = [
       { id: "currentlyReading", name: "Currently Reading" },
       { id: "wantToRead", name: "Want to Read" },
-      { id: "read", name: "Read" }
+      { id: "read", name: "Read" },
     ];
 
     return (
@@ -119,7 +118,7 @@ class BooksApp extends React.Component {
                     type="text"
                     placeholder="Search by title or author"
                     value={query}
-                    onChange={event => {
+                    onChange={(event) => {
                       this.updateQuery(event.target.value);
                     }}
                   />
@@ -144,7 +143,7 @@ class BooksApp extends React.Component {
                 <h1>My Reads</h1>
               </div>
               <div className="list-books-content">
-                {bookShelfs.map(bookshelf => (
+                {bookShelfs.map((bookshelf) => (
                   <div className="bookshelf" key={bookshelf.id + Math.random()}>
                     <h2 className="bookshelf-title">{bookshelf.name}</h2>
                     <div className="bookshelf-books">
